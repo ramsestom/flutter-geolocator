@@ -227,9 +227,12 @@ class Geolocator {
       parameters['localeIdentifier'] = localeIdentifier;
     }
 
-    final List<dynamic> placemarks =
-        await _methodChannel.invokeMethod('placemarkFromAddress', parameters);
-    return Placemark.fromMaps(placemarks);
+    try {
+      final List<dynamic> placemarks = await _methodChannel.invokeMethod('placemarkFromAddress', parameters);
+      return Placemark.fromMaps(placemarks);
+    } catch (e) {
+      return List<Placemark>();
+    }
   }
 
   /// Returns a list of [Placemark] instances found for the supplied coordinates.
@@ -253,14 +256,11 @@ class Geolocator {
       parameters['localeIdentifier'] = localeIdentifier;
     }
 
-    final List<dynamic> placemarks = await _methodChannel.invokeMethod(
-        'placemarkFromCoordinates', parameters);
-
-    try {
+    return _methodChannel.invokeMethod('placemarkFromCoordinates', parameters).then((placemarks) {
       return Placemark.fromMaps(placemarks);
-    } on ArgumentError {
-      return null;
-    }
+    }).catchError((e) {
+      return List<Placemark>();
+    });
   }
 
   /// Convenience method to access [placemarkFromCoordinates()] using an

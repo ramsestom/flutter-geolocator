@@ -13,6 +13,7 @@ class Placemark {
       this.subLocality,
       this.thoroughfare,
       this.subThoroughfare,
+      this.formattedAddress,
       this.position});
 
   Placemark._(
@@ -26,9 +27,10 @@ class Placemark {
       this.subLocality,
       this.thoroughfare,
       this.subThoroughfare,
+      this.formattedAddress,
       this.position});
 
-  /// The name of the placemark.
+  /// The name of the placemark. 
   final String name;
 
   /// The abbreviated country name, according to the two letter (alpha-2) [ISO standard](https://www.iso.org/iso-3166-country-codes.html).
@@ -61,6 +63,9 @@ class Placemark {
   /// The geocoordinates associated with the placemark.
   final Position position;
 
+  //The formated address
+  final String formattedAddress;
+
   /// Converts a list of [Map] instances to a list of [Placemark] instances.
   static List<Placemark> fromMaps(dynamic message) {
     if (message == null) {
@@ -90,11 +95,16 @@ class Placemark {
       subLocality: placemarkMap['subLocality'] ?? '',
       thoroughfare: placemarkMap['thoroughfare'] ?? '',
       subThoroughfare: placemarkMap['subThoroughfare'] ?? '',
+      formattedAddress: placemarkMap['formattedAddress'] ?? '',
       position: placemarkMap['position'] != null
           ? Position.fromMap(placemarkMap['position'])
           : null,
     );
   }
+
+  // static Placemark fromRowAddress(dynamic address) {
+  //   //TODO
+  // }
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -107,6 +117,27 @@ class Placemark {
         'subLocality': subLocality,
         'thoroughfare': thoroughfare,
         'subThoroughfare': subThoroughfare,
+        'formattedAddress': formattedAddress,
         'position': position
-      };
+  };
+
+  factory Placemark.fromJson(Map<String, dynamic> json) => fromMap(json);
+
+  Placemark copy() {
+    return Placemark(
+      name: this.name,
+      isoCountryCode: this.isoCountryCode,
+      country: this.country,
+      postalCode: this.postalCode,
+      administrativeArea: this.administrativeArea,
+      subAdministrativeArea: this.subAdministrativeArea,
+      locality: this.locality,
+      subLocality: this.subLocality,
+      thoroughfare: this.thoroughfare,
+      subThoroughfare: this.subThoroughfare,
+      formattedAddress: this.formattedAddress,
+      position: this.position?.copy()
+    );
+  }
+
 }

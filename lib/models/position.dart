@@ -125,5 +125,21 @@ class Position {
         'heading': heading,
         'speed': speed,
         'speedAccuracy': speedAccuracy,
-      };
+  };
+
+  factory Position.fromJson(Map<String, dynamic> json) => fromMap(json);
+
+  Position copy() {
+    return Position(
+      longitude: this.longitude,
+      latitude: this.latitude,
+      timestamp: this.timestamp,
+      mocked: this.mocked,
+      accuracy: this.accuracy,
+      altitude: this.altitude,
+      heading: this.heading,
+      speed: this.speed,
+      speedAccuracy: this.speedAccuracy,
+    );
+  }
 }
