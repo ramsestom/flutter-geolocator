@@ -156,4 +156,25 @@ class Position {
         'speed_accuracy': speedAccuracy,
         'is_mocked': isMocked,
       };
+
+
+  /// Convert the json [Map] into a [Position] instance
+  /// Allows automatic (without a converter) deserialization with the json_serializable lib
+  factory Position.fromJson(Map<String, dynamic> json) => fromMap(json);
+
+  /// return a [Position] copy instance
+  Position copy() {
+    return Position(
+      longitude: longitude,
+      latitude: latitude,
+      timestamp: timestamp,
+      accuracy: accuracy,
+      altitude: altitude,
+      heading: heading,
+      speed: speed,
+      speedAccuracy: speedAccuracy,
+      floor: floor,
+      isMocked: isMocked,
+    );
+  }
 }
